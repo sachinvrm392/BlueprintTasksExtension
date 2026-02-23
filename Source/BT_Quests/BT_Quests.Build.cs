@@ -12,7 +12,8 @@ public class BT_Quests : ModuleRules
             {
                 "Core", 
                 "BlueprintTaskForge",
-                "GameplayTags"
+                "GameplayTags",
+                "OmniToolbox"
             }
         );
 
@@ -30,7 +31,7 @@ public class BT_Quests : ModuleRules
         string PluginPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "../../../"));
         
         //Check if the TagFacts plugin exists
-        if (Directory.Exists(Path.Combine(PluginPath, "TagFacts")))
+        if(Plugins.GetPlugin("TagFacts") != null)
         {
             PublicDefinitions.Add("TAGFACTS_INSTALLED=1");
             PublicDependencyModuleNames.Add("TagFacts");
@@ -39,16 +40,15 @@ public class BT_Quests : ModuleRules
         {
             PublicDefinitions.Add("TAGFACTS_INSTALLED=0");
         }
-		
-        //Check if the Hermes plugin exists
-        if (Directory.Exists(Path.Combine(PluginPath, "HermesCommunications")))
+        
+        if(Plugins.GetPlugin("AsyncMessageSystem") != null)
         {
-            PublicDefinitions.Add("HERMES_INSTALLED=1");
-            PublicDependencyModuleNames.Add("HermesCommunications");
+            PublicDefinitions.Add("AsyncMessageSystem_Enabled=1");
+            PublicDependencyModuleNames.Add("AsyncMessageSystem");
         }
         else
         {
-            PublicDefinitions.Add("HERMES_INSTALLED=0");
+            PublicDefinitions.Add("AsyncMessageSystem_Enabled=0");
         }
         
         //Check if the Cog plugin exists

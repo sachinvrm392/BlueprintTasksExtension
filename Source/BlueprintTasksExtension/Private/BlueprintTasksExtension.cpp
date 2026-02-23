@@ -1,8 +1,10 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright (C) Varian Daemon 2025. All Rights Reserved.
 
 #include "BlueprintTasksExtension.h"
 
+#if WITH_EDITOR
 #include "Settings/BtfEditorSettings.h"
+#endif
 
 #define LOCTEXT_NAMESPACE "FBlueprintTasksExtensionModule"
 

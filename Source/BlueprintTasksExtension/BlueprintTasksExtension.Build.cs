@@ -32,7 +32,8 @@ public class BlueprintTasksExtension : ModuleRules
 				"Core", 
 				"BlueprintTaskForge",
 				"GameplayTags", 
-				"GameFeatures",
+				"GameFeatures", 
+				"OmniToolbox",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

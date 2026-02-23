@@ -11,17 +11,17 @@
 
 UDialogueTask::UDialogueTask(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+#if WITH_EDITORONLY_DATA
 	Category = "Dialogue";
 	MenuDisplayName = "Dialogue Task";
 	Tooltip = "A task that displays a dialogue box.";
-
+	
+	Decorator = UDialogueTaskDecorator::StaticClass();
+	
 	if(HasAnyFlags(RF_ClassDefaultObject))
 	{
 		ExecFunction.Empty();
 	}
-
-#if WITH_EDITORONLY_DATA
-	Decorator = UDialogueTaskDecorator::StaticClass();
 #endif
 }
 

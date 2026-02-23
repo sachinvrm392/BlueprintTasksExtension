@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BtfTaskForge.h"
 #include "GameplayTagContainer.h"
+#include "Developer/I_AssetDetails.h"
 
 #include "DialogueTask.generated.h"
 
@@ -139,8 +140,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDialogueFinished);
  * you must create a child and implement your own widgets and logic.
  * Your widget must have a delegate that will execute SelectDialogueOption.
  */
-UCLASS(Abstract, AutoExpandCategories = ("Dialogue"), meta=(ContextMenuCategory = "Varian's Plugins", ContextMenuEntryName = "Dialogue|Task", ContextMenuPrefix = "DLT_"))
-class BT_DIALOGUE_API UDialogueTask : public UBtf_TaskForge
+UCLASS(Abstract, AutoExpandCategories = ("Dialogue"))
+class BT_DIALOGUE_API UDialogueTask : public UBtf_TaskForge, public II_AssetDetails
 {
 	GENERATED_BODY()
 
@@ -174,4 +175,19 @@ public:
 	void SelectDialogueOption(FDialogueTaskOption Option);
 
 	virtual TArray<FString> ValidateNodeDuringCompilation_Implementation() override;
+	
+	virtual FLinearColor GetAssetColor_Implementation() const override
+	{
+		return OmniToolbox::BlueprintAssetColor;
+	}
+
+	virtual bool AppearsInContextMenu_Implementation() const override
+	{
+		return GetClass() == UDialogueTask::StaticClass();
+	}
+
+	virtual TArray<FText> GetAssetsCategories_Implementation() const override
+	{
+		return { FText::FromString("Dialogue System") };
+	}
 };

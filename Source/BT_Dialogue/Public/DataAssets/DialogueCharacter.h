@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Developer/I_AssetDetails.h"
 #include "Engine/DataAsset.h"
 #include "DialogueCharacter.generated.h"
 
 /**
  * 
  */
-UCLASS(meta=(ContextMenuCategory = "Varian's Plugins", ContextMenuEntryName = "Dialogue|Character", ContextMenuPrefix = "DC_"))
-class BT_DIALOGUE_API UDialogueCharacter : public UPrimaryDataAsset
+UCLASS()
+class BT_DIALOGUE_API UDialogueCharacter : public UPrimaryDataAsset, public II_AssetDetails
 {
 	GENERATED_BODY()
 
@@ -34,4 +35,14 @@ public:
 	FLinearColor NodeColor;
 	
 #endif
+
+	virtual bool AppearsInContextMenu_Implementation() const override
+	{
+		return GetClass() == UDialogueCharacter::StaticClass();
+	}
+
+	virtual TArray<FText> GetAssetsCategories_Implementation() const override
+	{
+		return { FText::FromString("Dialogue System") };
+	}
 };

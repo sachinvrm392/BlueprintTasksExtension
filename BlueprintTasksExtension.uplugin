@@ -51,9 +51,13 @@
 			"Optional": true
 		},
 		{
-			"Name": "HermesCommunications",
+			"Name": "AsyncMessageSystem",
 			"Enabled": true,
 			"Optional": true
+		},
+		{
+			"Name": "OmniToolbox",
+			"Enabled": true
 		}
 	]
 }

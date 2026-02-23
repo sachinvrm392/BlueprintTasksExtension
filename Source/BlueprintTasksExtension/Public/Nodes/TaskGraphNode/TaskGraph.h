@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BtfTaskForge.h"
 #include "GameplayTagContainer.h"
+#include "Developer/I_AssetDetails.h"
 #include "Engine/CancellableAsyncAction.h"
 
 #include "TaskGraph.generated.h"
@@ -23,8 +24,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGraphFinished, FGameplayTagContaine
 * task graphs and use the AsyncActivateTaskGraphNode.
 * By default, you can only create task graphs through this
 * async function to prevent hard reference mistakes. */
-UCLASS(Abstract, Blueprintable, meta=(ContextMenuCategory = "Varian's Plugins", ContextMenuEntryName = "Task Graph", ContextMenuPrefix = "TG_"))
-class BLUEPRINTTASKSEXTENSION_API UTaskGraph : public UObject, public FTickableGameObject
+UCLASS(Abstract, Blueprintable)
+class BLUEPRINTTASKSEXTENSION_API UTaskGraph : public UObject, public FTickableGameObject, public II_AssetDetails
 {
 	GENERATED_BODY()
 
@@ -83,4 +84,14 @@ public:
 	virtual TStatId GetStatId() const override;
 
 	virtual class UWorld* GetWorld() const override;
+	
+	virtual FLinearColor GetAssetColor_Implementation() const override
+	{
+		return OmniToolbox::BlueprintAssetColor;
+	}
+
+	virtual bool AppearsInContextMenu_Implementation() const override
+	{
+		return GetClass() == UTaskGraph::StaticClass();
+	}
 };

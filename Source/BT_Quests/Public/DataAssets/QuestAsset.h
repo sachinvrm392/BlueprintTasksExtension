@@ -4,12 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "Developer/I_AssetDetails.h"
 #include "Engine/DataAsset.h"
 #include "QuestAsset.generated.h"
 
 class UQuestChain;
 class UQuestRequirementBase;
 class UQuestAsset;
+
+namespace BTE
+{
+	static FName QuestID_Tag = FName("QuestID_Tag");
+	static FName QuestName_Tag = FName("QuestName_Tag");
+	static FName QuestChainName_Tag = FName("QuestChainName_Tag");
+}
 
 UENUM(BlueprintType)
 enum class EBTQuestState : uint8
@@ -143,8 +151,8 @@ struct FBTQuestWrapper
 /**
  * An asset that stores all data revolving a quest
  */
-UCLASS(meta=(ContextMenuCategory = "Varian's Plugins", ContextMenuEntryName = "Quests|Quest", ContextMenuPrefix = "QA_"))
-class BT_QUESTS_API UQuestAsset : public UPrimaryDataAsset
+UCLASS()
+class BT_QUESTS_API UQuestAsset : public UPrimaryDataAsset, public II_AssetDetails
 {
 	GENERATED_BODY()
 
@@ -184,4 +192,16 @@ public:
 	bool AutoTrack = false;
 
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
+	
+	virtual void GetAssetRegistryTags(FAssetRegistryTagsContext Context) const override;
+
+	virtual bool AppearsInContextMenu_Implementation() const override
+	{
+		return GetClass() == UQuestAsset::StaticClass();
+	}
+
+	virtual TArray<FText> GetAssetsCategories_Implementation() const override
+	{
+		return { FText::FromString("Quest System") };
+	}
 };

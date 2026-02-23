@@ -20,7 +20,9 @@ class BT_QUESTS_API UQuestTaskDecorator : public UBtf_NodeDecorator
 	
 	TWeakObjectPtr<UQuestAsset> QuestInformation = nullptr;
 
+#if WITH_EDITOR
 	virtual TSharedRef<SWidget> CreateCenterContent(UClass* TaskClass, UBtf_TaskForge* BlueprintTaskNode, UEdGraphNode* GraphNode) override;
+#endif
 
 	virtual TArray<UObject*> Get_ObjectsForExtraDetailsPanels() const override;
 };

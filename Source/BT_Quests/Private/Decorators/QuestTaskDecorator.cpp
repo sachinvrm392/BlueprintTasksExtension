@@ -6,6 +6,7 @@
 #include "Tasks/QuestTaskNode.h"
 #include "DataAssets/QuestAsset.h"
 
+#if WITH_EDITOR
 TSharedRef<SWidget> UQuestTaskDecorator::CreateCenterContent(UClass* TaskClass,
                                                              UBtf_TaskForge* BlueprintTaskNode, UEdGraphNode* GraphNode)
 {
@@ -136,8 +137,10 @@ TSharedRef<SWidget> UQuestTaskDecorator::CreateCenterContent(UClass* TaskClass,
 		}
 	}
 	
-	return CenterContentArea.ToSharedRef();
+	return CenterContentArea.ToSharedRef();	
 }
+
+#endif
 
 TArray<UObject*> UQuestTaskDecorator::Get_ObjectsForExtraDetailsPanels() const
 {

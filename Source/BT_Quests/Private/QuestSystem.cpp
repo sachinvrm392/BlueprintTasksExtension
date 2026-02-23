@@ -3,6 +3,10 @@
 
 #include "QuestSystem.h"
 
+#if AsyncMessageSystem_Enabled
+#include "AsyncMessageSystemBase.h"
+#include "AsyncMessageWorldSubsystem.h"
+#endif
 #include "BT_Quests.h"
 #include "DataAssets/QuestChain.h"
 #include "Engine/AssetManager.h"
@@ -12,10 +16,6 @@
 
 #if TAGFACTS_INSTALLED
 #include "Core/FactSubSystem.h"
-#endif
-
-#if HERMES_INSTALLED
-#include "HermesSubsystem.h"
 #endif
 
 UQuestSystem::UQuestSystem()
@@ -76,12 +76,12 @@ bool UQuestSystem::AcceptQuest(TSoftObjectPtr<UQuestAsset> Quest, bool ForceAcce
 	}
 	#endif
 
-	#if HERMES_INSTALLED
+	#if AsyncMessageSystem_Enabled
+	if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 	{
-		UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-		/**V: We don't need to async load the quest, because creating the quest
-		 * wrapper already block loads it. */
-		Hermes->BroadcastMessage(QuestSubSystem, Quest.LoadSynchronous()->QuestID, FInstancedStruct::Make(QuestWrapper));
+		Sys->QueueMessageForBroadcast(
+			FAsyncMessageId(Quest.LoadSynchronous()->QuestID), 
+			FInstancedStruct::Make(QuestWrapper));
 	}
 	#endif
 
@@ -191,14 +191,14 @@ void UQuestSystem::CompleteQuest(TSoftObjectPtr<UQuestAsset> Quest, bool SkipCom
 	 * this quest was completed.*/
 	UFactSubSystem::Get()->IncrementFact(Quest.LoadSynchronous()->QuestID);
 	#endif
-
-	#if HERMES_INSTALLED
-	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
-	Streamable.RequestAsyncLoad(Quest.ToSoftObjectPath(), [QuestSubSystem, Quest, QuestWrapper]
+	
+	#if AsyncMessageSystem_Enabled
+	if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 	{
-		UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-		Hermes->BroadcastMessage(QuestSubSystem, Quest.Get()->QuestID, FInstancedStruct::Make(*QuestWrapper));
-	});
+		Sys->QueueMessageForBroadcast(
+			FAsyncMessageId(Quest.Get()->QuestID), 
+			FInstancedStruct::Make(*QuestWrapper));
+	}
 	#endif
 		
 	#if ENABLE_VISUAL_LOG
@@ -342,24 +342,26 @@ bool UQuestSystem::FailQuest(TSoftObjectPtr<UQuestAsset> Quest, bool FailObjecti
 			CurrentObjective.State = EBTQuestState::Failed;
 			QuestSubSystem->ObjectiveFailed.Broadcast(CurrentObjective);
 
-			#if HERMES_INSTALLED
+			#if AsyncMessageSystem_Enabled
+			if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 			{
-				UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-				Hermes->BroadcastMessage(QuestSubSystem, CurrentObjective.ObjectiveID, FInstancedStruct::Make(CurrentObjective));
+				Sys->QueueMessageForBroadcast(
+					FAsyncMessageId(Quest.LoadSynchronous()->QuestID), 
+					FInstancedStruct::Make(CurrentObjective));
 			}
 			#endif
 		}
 	}
 
 	QuestSubSystem->QuestFailed.Broadcast(*QuestWrapper);
-
-	#if HERMES_INSTALLED
-	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
-	Streamable.RequestAsyncLoad(Quest.ToSoftObjectPath(), [QuestSubSystem, Quest, QuestWrapper]
+	
+	#if AsyncMessageSystem_Enabled
+	if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 	{
-		UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-		Hermes->BroadcastMessage(QuestSubSystem, Quest.Get()->QuestID, FInstancedStruct::Make(*QuestWrapper));
-	});
+		Sys->QueueMessageForBroadcast(
+			FAsyncMessageId(Quest.Get()->QuestID), 
+			FInstancedStruct::Make(*QuestWrapper));
+	}
 	#endif
 
 	return true;
@@ -629,11 +631,13 @@ bool UQuestSystem::ProgressObjective(const FGameplayTag ObjectiveID, float Progr
 				}
 			
 				QuestSubSystem->ObjectiveProgressed.Broadcast(CurrentObjective, ProgressDelta, ObjectiveCompleted, Instigator);
-			
-				#if HERMES_INSTALLED
+
+				#if AsyncMessageSystem_Enabled
+				if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 				{
-					UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-					Hermes->BroadcastMessage(QuestSubSystem,CurrentObjective.ObjectiveID, FInstancedStruct::Make(CurrentObjective));
+					Sys->QueueMessageForBroadcast(
+						FAsyncMessageId(CurrentObjective.ObjectiveID), 
+						FInstancedStruct::Make(CurrentObjective));
 				}
 				#endif
 
@@ -804,11 +808,13 @@ bool UQuestSystem::FailObjective(FGameplayTag Objective, bool bFailQuest)
 				#endif
 
 				QuestSubSystem->ObjectiveFailed.Broadcast(CurrentObjective);
-
-				#if HERMES_INSTALLED
+				
+				#if AsyncMessageSystem_Enabled
+				if(TSharedPtr<FAsyncMessageSystemBase> Sys = UAsyncMessageWorldSubsystem::GetSharedMessageSystem(QuestSubSystem->GetWorld()))
 				{
-					UHermesSubsystem* Hermes =UHermesSubsystem::Get();
-					Hermes->BroadcastMessage(QuestSubSystem,CurrentObjective.ObjectiveID, FInstancedStruct::Make(CurrentObjective));
+					Sys->QueueMessageForBroadcast(
+						FAsyncMessageId(CurrentObjective.ObjectiveID), 
+						FInstancedStruct::Make(CurrentObjective));
 				}
 				#endif
 				

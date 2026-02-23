@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Developer/I_AssetDetails.h"
 #include "Engine/DataAsset.h"
 #include "QuestChain.generated.h"
 
@@ -20,8 +21,8 @@ struct FBTQuestChainStage
 /**
  * An asset that manages a set of quests, creating a "quest chain"
  */
-UCLASS(meta=(ContextMenuCategory = "Varian's Plugins", ContextMenuEntryName = "Quests|Quest Chain", ContextMenuPrefix = "QC_"))
-class BT_QUESTS_API UQuestChain : public UPrimaryDataAsset
+UCLASS()
+class BT_QUESTS_API UQuestChain : public UPrimaryDataAsset, public II_AssetDetails
 {
 	GENERATED_BODY()
 
@@ -32,6 +33,8 @@ public:
 	
 	UPROPERTY(Category = "Quest Chain", BlueprintReadOnly, EditAnywhere)
 	TArray<FBTQuestChainStage> Stages;
+	
+	virtual void GetAssetRegistryTags(FAssetRegistryTagsContext Context) const override;
 
 #if WITH_EDITOR
 
@@ -40,4 +43,14 @@ public:
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	
 #endif
+
+	virtual bool AppearsInContextMenu_Implementation() const override
+	{
+		return GetClass() == UQuestChain::StaticClass();
+	}
+
+	virtual TArray<FText> GetAssetsCategories_Implementation() const override
+	{
+		return { FText::FromString("Quest System") };
+	}
 };

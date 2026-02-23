@@ -12,7 +12,8 @@ public class BT_Dialogue : ModuleRules
             {
                 "Core", 
                 "BlueprintTaskForge",
-                "GameplayTags"
+                "GameplayTags",
+                "OmniToolbox"
             }
         );
 
@@ -26,10 +27,8 @@ public class BT_Dialogue : ModuleRules
             }
         );
         
-        string PluginPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "../../../"));
-        
         //Check if the Hermes plugin exists
-        if (Directory.Exists(Path.Combine(PluginPath, "TagFacts")))
+        if(Plugins.GetPlugin("TagFacts") != null)
         {
             PublicDefinitions.Add("TAGFACTS_INSTALLED=1");
             PublicDependencyModuleNames.Add("TagFacts");

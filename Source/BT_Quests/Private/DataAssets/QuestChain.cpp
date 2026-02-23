@@ -3,10 +3,18 @@
 
 #include "DataAssets/QuestChain.h"
 #include "DataAssets/QuestAsset.h"
+#include "UObject/AssetRegistryTagsContext.h"
 
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
 #endif
+
+void UQuestChain::GetAssetRegistryTags(FAssetRegistryTagsContext Context) const
+{
+	Context.AddTag(FAssetRegistryTag(BTE::QuestChainName_Tag, ChainName.ToString(), FAssetRegistryTag::TT_Alphabetical));
+	
+	Super::GetAssetRegistryTags(Context);
+}
 
 #if WITH_EDITOR
 EDataValidationResult UQuestChain::IsDataValid(FDataValidationContext& Context) const

@@ -10,11 +10,11 @@
 
 UQuestTaskNode::UQuestTaskNode(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+#if WITH_EDITORONLY_DATA
 	Category = "Quests";
 	Tooltip = "Task that accepts and tracks the progress of a quest";
 	MenuDisplayName = "Quest Task";
-
-#if WITH_EDITORONLY_DATA
+	
 	Decorator = UQuestTaskDecorator::StaticClass();
 
 	if(HasAnyFlags(RF_ClassDefaultObject))
@@ -26,7 +26,6 @@ UQuestTaskNode::UQuestTaskNode(const FObjectInitializer& ObjectInitializer) : Su
 		OutDelegate.Add(FBtf_NameSelect("QuestCompleted"));
 		ExecFunction.Empty();
 	}
-
 #endif
 }
 
