@@ -72,3 +72,9 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# VS Code workspace settings
+.vscode/
+
+# Node modules for Practice MCP
+Practice MCP/node_modules/

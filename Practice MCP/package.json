@@ -1,0 +1,18 @@
+{
+  "name": "practice-mcp-inspector",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-inspector": "npm install @modelcontextprotocol/inspector",
+    "inspect": "node mcp_inspector_connect.js",
+    "inspector": "npx @modelcontextprotocol/inspector --config mcp.json --server practice-mcp-server",
+    "inspector-http": "npx @modelcontextprotocol/inspector --config mcp.json --server practice-mcp-server-http"
+  },
+  "dependencies": {
+    "mcp-client": "^1.13.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.21.2"
+  }
+}

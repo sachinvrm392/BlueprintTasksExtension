@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "practice-mcp-server": {
+      "command": "/workspaces/BlueprintTasksExtension/.venv/bin/python",
+      "args": [
+        "-m",
+        "fastmcp",
+        "run",
+        "fastmcp_server.py",
+        "--transport",
+        "stdio",
+        "--no-banner"
+      ],
+      "env": {}
+    },
+    "practice-mcp-server-http": {
+      "command": "/workspaces/BlueprintTasksExtension/.venv/bin/python",
+      "args": [
+        "-m",
+        "fastmcp",
+        "run",
+        "fastmcp_server.py",
+        "--transport",
+        "http",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "3001",
+        "--path",
+        "/mcp",
+        "--no-banner"
+      ],
+      "env": {}
+    }
+  }
+}
