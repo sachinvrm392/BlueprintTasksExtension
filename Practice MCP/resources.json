@@ -1,0 +1,20 @@
+[
+  {
+    "id": "resource_repo_overview",
+    "type": "document",
+    "name": "Repository Overview",
+    "description": "High-level description of the BlueprintTasksExtension repo structure and goals."
+  },
+  {
+    "id": "resource_plugin_architecture",
+    "type": "document",
+    "name": "Plugin Architecture",
+    "description": "Core subsystem relationships for dialogue, quests, and task graph nodes."
+  },
+  {
+    "id": "resource_mcp_plan",
+    "type": "document",
+    "name": "MCP Plan",
+    "description": "Plan for how to implement the Practice MCP prototype in this repository."
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "initialize_session": "Initialize the MCP session and confirm that the FastMCP stub is ready.",
+  "list_tools": "List the available Playwright-style browser_to_url tools that can be invoked.",
+  "execute_tool": "Execute a browser_to_url tool by name with a URL argument and return the result.",
+  "describe_resource": "Describe the requested resource by id and provide its purpose.",
+  "query_data": "Query the data definitions and return the matching payload or metadata."
+}

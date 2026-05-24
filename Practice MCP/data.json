@@ -1,0 +1,22 @@
+[
+  {
+    "id": "data_plugin_metadata",
+    "name": "Plugin Metadata",
+    "description": "Basic metadata describing the BlueprintTasksExtension plugin and its components.",
+    "payload": {
+      "name": "BlueprintTasksExtension",
+      "version": "0.1.0",
+      "modules": ["BT_Dialogue", "BT_Quests"],
+      "language": "C++"
+    }
+  },
+  {
+    "id": "data_tool_example",
+    "name": "Tool Example Payload",
+    "description": "Example input payload for browser_to_url tool execution.",
+    "payload": {
+      "url": "https://example.com",
+      "action": "navigate"
+    }
+  }
+]
